@@ -2,6 +2,12 @@
 //+++++++++++++++++++++++++++++++++++++++ REGISTER USER ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 const register_btn = document.getElementById('create');
+const bene_list = document.getElementById("bene_list")
+const bene_no_list = document.getElementById("bene_no_list")
+
+const loginEndpoint = 'https://crest-sever.onrender.com';
+const username = localStorage.getItem("username");
+
 
 document.getElementById('beneficiaries').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent the default form submission
@@ -12,10 +18,9 @@ document.getElementById('beneficiaries').addEventListener('submit', function(eve
     })
     // Get form data
     const formData = new FormData(this);
-    // Simulated endpoint for login (replace this with your actual endpoint)
-    const loginEndpoint = 'https://crest-sever.onrender.com';
-   
-    const username = localStorage.getItem("username");
+    // Simulated endpoint for login (replace this with your actual endpoint)   
+    
+
     register_btn.disabled = true;
 
     // Simulated login request
@@ -53,5 +58,64 @@ document.getElementById('beneficiaries').addEventListener('submit', function(eve
 
   });
   
+//=================================================================================================================================================================
+//===================================================================== FETCH Credits ========================================================================
+//=================================================================================================================================================================
 
+
+
+fetch(`${loginEndpoint}/beneficiaries/${username}`) // Replace URL with your API endpoint
+.then(response => {
+  if (!response.ok) {
+    throw new Error('Network response was not ok.');
+  }
+  return response.json();
+})
+.then(data => {
+  displayUserCredits(data);
+  console.log("log is",data)
+
+})
+.catch(error => {
+  console.error('There has been a problem with your fetch operation:', error);
+});
+
+function displayUserCredits(res) {
+ 
+  bene_no_list.style.display = 'none';
+
+  //const data = ['Info 1', 'Info 2', 'Info 3']; // Replace with your data
+
+  const data = JSON.parse(res.data)
+
+  data.forEach(item => {
+    const tr = document.createElement('tr');
+  
+    //Creating table data cells and setting their attributes
+    
+    const td1 = document.createElement('td');
+    // td1.setAttribute('colspan', '100%');
+    // td1.classList.add('text-center');
+    td1.textContent = item.account_number;
+
+    const td2 = document.createElement('td');
+    // td2.setAttribute('colspan', '100%');
+    // td2.classList.add('text-center');
+    td2.textContent = item.account_name;
+
+    const td3 = document.createElement('td');
+    // td3.setAttribute('colspan', '100%');
+    // td3.classList.add('text-center');
+    td3.textContent = item.short_name;
+  
+    // Appending table data cells to the table row
+    tr.appendChild(td1);
+    tr.appendChild(td2);
+    tr.appendChild(td3);
+  
+    // Appending the table row to the table (CreditdataList)
+    bene_list.appendChild(tr);
+  });
+
+}
 
