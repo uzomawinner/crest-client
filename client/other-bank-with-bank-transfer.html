@@ -329,7 +329,7 @@
                         <i class="las la-times"></i>
                     </span>
                 </div>
-                <form action="" method="post">
+                <form action="" id="submit-form" method="post">
                     <input type="hidden" name="_token" value="XgOmfayUivkn0mzn8nl0nLhdLVwIBDJTQtj0GAc5">                    <div class="modal-body">
                         <div class="row">
                             <div class="col-xl-5 mb-3">
@@ -370,12 +370,26 @@
 
                             <div class="col-xl-7">
                                 <div class="form-group">
-                                    <label class="required fw-bold">Bank</label>
-                                    <input class="bank-name form--control" class="form--control" type="text" readonly>
+                                    <label>Select Bank</label>
+                                    <select class="form--control" name="bank" required>
+                                        <option value="" disabled selected>Select One</option>
+                                                                                <option value="1">HSBC</option>
+                                                                                <option value="2">Vietcom</option>
+                                                                                <option value="3">Chase</option>
+                                                                                <option value="4">Citi Bank</option>
+                                                                                <option value="5">Bangkok Bank</option>
+                                                                                <option value="6">BIDV</option>
+                                                                                <option value="7">Capital One</option>
+                                                                                <option value="8">Wells Fargo</option>
+                                                                                <option value="9">Truist Financial</option>
+                                                                                <option value="10">Goldman Sachs</option>
+                                                                                <option value="11">US Bancorp</option>
+                                                                                <option value="12">Others</option>
+                                                                        </select>
                                 </div>
                                 <div class="form-group">
                                     <label class="required fw-bold">Recipient</label>
-                                    <input class="short-name form--control" class="form--control" type="text" readonly>
+                                    <input class="form--control" type="text"  placeholder="6724301068" required>
                                 </div>
                                 <div class="form-group">
                                     <label class="required fw-bold">Amount</label>
@@ -413,7 +427,7 @@
     <script src="assets/js/main.js"></script> 
     <link rel="stylesheet" href="assets/templates/iziToast.min.css">
     <script src="assets/js/scripts/iziToast.min.js"></script>
-    <script src="assets/js/scripts/profile.js"></script> 
+    <script src="assets/js/scripts/other-transfer.js"></script> 
 
     
         <script>
@@ -434,7 +448,6 @@
                 if (data.transfer_charge) {
                     modal.find('.transfer_charge').html(`<small class="text--danger">* Charge: ${data.transfer_charge}</small>`);
                 }
-                modal.find('form')[0].action = `user/transfer/other-bank/request/${data.id}`;
                 modal.modal('show');
             });
 
