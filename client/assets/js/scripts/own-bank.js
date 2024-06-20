@@ -12,12 +12,14 @@ const submit_btn = document.getElementById('submit-btn');
 
 
 let success = false
+let receiver_name = ""
+let account_number_of_sender = ""
 
 const inputField = document.getElementById('addr');
 inputField.addEventListener('input', function() {
 
 const value = inputField.value;
-  if (value.length === 15){
+  if (value.length === 15 || value.length === 10){
     fetch(`${loginEndpoint}/account_num/${value}`)
     .then(response => {
       if (!response.ok) {
@@ -28,6 +30,7 @@ const value = inputField.value;
     .then(data => {
       const res = JSON.parse(data.data)
       resultDiv.textContent =`${res.first_name} ${res.last_name}`;
+      receiver_name = `${res.first_name} ${res.last_name}`
       success = true
 
       console.log("log is", data)
@@ -78,6 +81,7 @@ document.getElementById('make_transfer').addEventListener('submit', function(eve
 
       const res = JSON.parse(data.data)
       let balance = res.balance;
+      account_number_of_sender = res.account
       
       
       let active = res.active;
@@ -131,6 +135,13 @@ document.getElementById('make_transfer').addEventListener('submit', function(eve
             return response.json();
           })
           .then(data => {
+            const tx_ref = generateRandomString()
+            const date = new Date()
+            document.getElementById("tx_amount").innerText = `$${amount}.00`;
+            document.getElementById("tx_ref").innerText = `Session ID: ${tx_ref}`;
+            document.getElementById("tx_from").innerText = `Transfer from: ${username}(${account_number_of_sender})`;
+            document.getElementById("tx_to").innerText = `Transfer to: ${receiver_name}(${account})`;
+            document.getElementById("tx_date").innerText = `Date: ${date}`;
             showModal()          
           })
           .catch(error => {
@@ -177,4 +188,22 @@ function showModal() {
 function hideModal() {
   document.getElementById('modal').style.display = 'none';
   document.getElementById('overlay').style.display = 'none';
+}
+
+function generateRandomString() {
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let randomString = '';
+
+  // // Generate 2 random letters
+  for (let i = 0; i < 2; i++) {
+    const randomIndex = Math.floor(Math.random() * letters.length);
+    randomString += letters.charAt(randomIndex);
+  }
+
+  // Generate 10 random numbers
+  for (let i = 0; i < 5; i++) {
+    randomString += Math.floor(Math.random() * 10);
+  }
+
+  return randomString;
 }

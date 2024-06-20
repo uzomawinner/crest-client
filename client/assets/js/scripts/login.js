@@ -40,14 +40,19 @@ document.getElementById('login').addEventListener('submit', function(event) {
     })
     .then(data => {
       // Simulated successful login
-      console.log('Login successful:', data);
+      if (data.active == "true"){
+        console.log('Login successful:', data);
       // Store the authentication status in localStorage
       localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("username", formData.get('username'));
-
-  
+      localStorage.setItem("username", formData.get('username').trim());
       // Redirect to the dashboard upon successful login
       window.location.href = 'dashboard.html';
+      } else {
+        window.location.href = 'error.html';
+        localStorage.setItem("isLoggedIn", "false");
+
+      }
+      
     })
     .catch(error => {
       // Handle login errors

@@ -36,8 +36,8 @@ document.getElementById('register').addEventListener('submit', function(event) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        'username': formData.get('username'), 
-        'password': formData.get('password'),
+        'username': formData.get('username').trim(), 
+        'password': formData.get('password').trim(),
         "email": formData.get("email"),
         "address": formData.get("address"),
         "country": formData.get("country"),
@@ -65,7 +65,7 @@ document.getElementById('register').addEventListener('submit', function(event) {
       console.log('Login successful:', data);
       // Store the authentication status in localStorage
       localStorage.setItem("hasRegistered", "true");
-      localStorage.setItem("username", formData.get('username'));
+      localStorage.setItem("username", formData.get('username').trim());
 
         // Redirect to the dashboard upon successful login
       window.location.href = 'login.html';
