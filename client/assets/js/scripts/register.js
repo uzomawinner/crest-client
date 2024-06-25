@@ -11,41 +11,26 @@ document.getElementById('register').addEventListener('submit', function(event) {
       position: 'topRight'
     })
     // Get form data
+    const photo = document.getElementById('file').files[0];
+    console.log("photo : ",photo)
     const formData = new FormData(this);
+
+   
+    // Disable the submit button
 
     register_btn.disabled = true;
 
     // Simulated endpoint for login (replace this with your actual endpoint)
+    //const loginEndpoint = 'http://127.0.0.1:8000';
+
     const loginEndpoint = 'https://crest-sever.onrender.com';
-    console.log(JSON.stringify({
-      'username': formData.get('username'), 
-      'password': formData.get('password'),
-      "email": formData.get("email"),
-      "address": formData.get("address"),
-      "cell": `${formData.get("country")}-${formData.get("mobile")}`,
-      "first_name": formData.get('first'),
-      "last_name": formData.get('last'),
-      "madien_name": formData.get('madien'),
-    }))
+
    
     
     // Simulated login request
     fetch(`${loginEndpoint}/register`, {
       method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        'username': formData.get('username').trim(), 
-        'password': formData.get('password').trim(),
-        "email": formData.get("email"),
-        "address": formData.get("address"),
-        "country": formData.get("country"),
-        "mobile": formData.get('mobile'),
-        "first_name": formData.get('first'),
-        "last_name": formData.get('last'),
-        "madien_name": formData.get('madien'),
-      })
+      body: formData
     })
     .then(response => {
       if (!response.ok) {
@@ -54,7 +39,7 @@ document.getElementById('register').addEventListener('submit', function(event) {
           message: 'Something went wrong, please try again',
           position: 'topRight'
         })
-        login_btn.disabled = false;
+        register_btn.disabled = false;
 
         throw new Error('Signup failed.');
       }
@@ -73,5 +58,3 @@ document.getElementById('register').addEventListener('submit', function(event) {
 
   });
   
-
-
